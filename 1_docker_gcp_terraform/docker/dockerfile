@@ -1,0 +1,11 @@
+# base image
+FROM python:3.9
+
+# instructions for image
+RUN pip install pandas
+
+# in interactive mode, will enter in bash commandline 
+ENTRYPOINT [ "bash" ]
+
+# to build
+# docker build -t <image_name>:<tag> dockerfile_dir

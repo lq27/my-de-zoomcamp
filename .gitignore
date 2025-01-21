@@ -1,3 +1,11 @@
+
+# database 
+1_docker_gcp_terraform/docker/ny_taxi_postgres_data/
+
+# csv
+*.csv
+
+########## python gitignore template below ##########
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
