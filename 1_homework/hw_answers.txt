@@ -1,0 +1,31 @@
+All of my work was done on a GCP VM using ubuntu and linux shell.  
+
+1. 
+--rm: docker run --help                              
+    Automatically remove the container and its associated anonymous volumes when it exits
+
+2. 
+Command used, along with output: 
+
+$ docker run -it --entrypoint "/bin/bash" python:3.9
+root@2742bf341812:/# pip list
+Package    Version
+---------- -------
+pip        23.0.1
+setuptools 58.1.0
+wheel      0.45.1
+
+
+3.
+
+(a) Set up localhost volume to map to docker data
+(b) Set up pgadmin 
+(c) Set up postgres 
+(d) Link pgadmin and postgres (two options, manually via docker network, or via docker-compose)
+(e) Postgres ingestion of Green taxi trips from Sept 2019 via python script 
+(f) SQL queries for data
+
+Local volume: /my-de-zoomcamp/1_homework/green_taxi_data
+Docker-compose file: /my-de-zoomcamp/1_homework/docker-compose.yaml
+Python script: /my-de-zoomcamp/1_homework/ingest_data.ipynb
+SQL commands:  

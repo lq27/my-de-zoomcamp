@@ -1,6 +1,7 @@
 
 # database 
 1_docker_gcp_terraform/docker/ny_taxi_postgres_data/
+1_homework/green_taxi_data/
 
 # csv
 *.csv
