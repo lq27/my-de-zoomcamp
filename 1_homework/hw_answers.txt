@@ -23,9 +23,14 @@ wheel      0.45.1
 (c) Set up postgres 
 (d) Link pgadmin and postgres (two options, manually via docker network, or via docker-compose)
 (e) Postgres ingestion of Green taxi trips from Sept 2019 via python script 
+    > Tested out in notebook for ease of exploration
+    > Converted nb to python script: $jupyter nbconvert --to=script ingest_data_hw.ipynb
 (f) SQL queries for data
 
 Local volume: /my-de-zoomcamp/1_homework/green_taxi_data
 Docker-compose file: /my-de-zoomcamp/1_homework/docker-compose.yaml
 Python script: /my-de-zoomcamp/1_homework/ingest_data.ipynb
 SQL commands:  
+
+
+https://github.com/DataTalksClub/nyc-tlc-data/releases/download/green/green_tripdata_2019-10.csv.gz
