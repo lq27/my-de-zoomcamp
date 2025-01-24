@@ -17,3 +17,40 @@ services:
       - "/home/abbythecat27/my-de-zoomcamp/1_homework/green_taxi_data:/var/lib/postgresql/data"
     ports:
       - 5432:5432
+
+  # python_ingest:
+  #   build:
+  #     context: .
+  #     dockerfile: ingest_dockerfile
+  #   # networks:
+  #   # - dbnet
+  #   # depends_on:
+  #   #   - pgdatabase
+  #   environment:
+  #     - TAXI_URL="https://github.com/DataTalksClub/nyc-tlc-data/releases/download/green/green_tripdata_2019-10.csv.gz"
+  #     - ENGINE_URL="postgresql://root:root@pgdatabase:5432/ny_taxi"
+  #     - TAXI_TABLENAME="green_taxi_data"
+  #   command: >
+  #     python ingest_data_hw.py
+  #     --data_url $TAXI_URL
+  #     --engine $ENGINE_URL
+  #     --tablename $TAXI_TABLENAME
+
+
+  # python_ingest2:
+  #   build:
+  #     context: .
+  #     dockerfile: ingest_dockerfile
+  #   # networks:
+  #   # - dbnet
+  #   # depends_on:
+  #   #   - pgdatabase
+  #   environment:
+  #     - ZONES_URL="https://github.com/DataTalksClub/nyc-tlc-data/releases/download/misc/taxi_zone_lookup.csv"
+  #     - ENGINE_URL="postgresql://root:root@pgdatabase:5432/ny_taxi"
+  #     - ZONES_TABLENAME="zones_data"
+  #   command: >
+  #     python ingest_data_hw.py
+  #     --data_url $ZONES_URL
+  #     --engine $ENGINE_URL
+  #     --tablename $ZONES_TABLENAME

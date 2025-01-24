@@ -1,0 +1,48 @@
+WITH october_rides AS (
+	SELECT *
+	FROM public.green_taxi
+	WHERE lpep_pickup_datetime >= '2019-10-01' 
+		AND lpep_pickup_datetime < '2019-11-01' 
+), 
+
+categorized_dist AS (
+	SELECT "VendorID", "trip_distance",
+	
+	CASE 
+		WHEN trip_distance <= 1 THEN 1
+	ELSE 0
+	END AS "1_mile",
+	
+	CASE 
+		WHEN trip_distance > 1 AND trip_distance <= 3 THEN 1
+	ELSE 0
+	END AS "1_3_miles",
+	
+	CASE 
+		WHEN trip_distance > 3 AND trip_distance <= 7 THEN 1
+	ELSE 0
+	END AS "3_7_miles",
+	
+	CASE 
+		WHEN trip_distance > 7 AND trip_distance <= 10 THEN 1
+	ELSE 0
+	END AS "7_10_miles",
+	
+	CASE 
+		WHEN trip_distance > 10 THEN 1
+	ELSE 0
+	END AS "10_plus_miles"
+	
+	FROM october_rides
+), 
+sums as (
+SELECT 
+	SUM("1_mile") AS "1_mi_sum", 
+	SUM("1_3_miles") AS "1_3_mi_sum", 
+	SUM("3_7_miles") AS "3_7_mi_sum", 
+	SUM("7_10_miles") AS "7_10_mi_sum", 
+	SUM("10_plus_miles") AS "10plus_mi_sum"
+FROM categorized_dist
+)
+SELECT 	"1_mi_sum" + "1_3_mi_sum" + "3_7_mi_sum" + "7_10_mi_sum" + "10plus_mi_sum"
+FROM sums

@@ -1,4 +1,81 @@
-All of my work was done on a GCP VM using ubuntu and linux shell.  
+All of my work was done on a GCP VM using linux shell running on ubuntu. 
+
+1. 24.3.1 
+
+Bash command used plus output:
+
+$ docker run -it --entrypoint "/bin/bash" python:3.12.8
+root@b93ca6521d5d:/# pip --version
+pip 24.3.1 from /usr/local/lib/python3.12/site-packages/pip (python 3.12)
+
+2.
+
+Hostname: "postgres" since that is the container name. If there were no container_name specified, then it would be "db," the service name. 
+Port: 5432. The port mapping is <port outside/host>:<port inside/container> . Pgadmin will want to access postgres's container port, since 
+    they can see each other within the network. 
+
+3.
+
+(a) Set up localhost volume to map to docker data
+(b) Set up pgadmin 
+(c) Set up postgres 
+(d) Link pgadmin and postgres (two options, manually via docker network, or via docker-compose)
+(e) Postgres ingestion of Green taxi trips from Sept 2019 via python script 
+    > Tested out in notebook for ease of exploration
+    > Converted nb to python script: $jupyter nbconvert --to=script ingest_data_hw.ipynb
+(f) Dockerize (build image for script) and run ingestion script container in the same network as pgadmin/postgres to ingest
+(g) SQL queries for data
+
+Local volume: /my-de-zoomcamp/1_homework/green_taxi_data
+Docker-compose file: /my-de-zoomcamp/1_homework/docker-compose.yaml
+Python script: /my-de-zoomcamp/1_homework/ingest_data.ipynb
+Dockerfile (for python script custom image): /my-de-zoomcamp/1_homework/Dockerfile
+SQL commands:  
+
+Bash commands in order: 
+
+$ docker build -t ingest_data:v0 .
+$ docker-compose -p pgd up
+$ docker run \
+    --network pgd_default ingest_data:v0 \
+    --data_url="https://github.com/DataTalksClub/nyc-tlc-data/releases/download/green/green_tripdata_2019-10.csv.gz" \
+    --engine="postgresql://root:root@pgdatabase:5432/ny_taxi" \
+    --tablename="green_taxi"
+$ docker run \
+    --network pgd_default ingest_data:v0 \
+    --data_url="https://github.com/DataTalksClub/nyc-tlc-data/releases/download/misc/taxi_zone_lookup.csv"
+    --engine="postgresql://root:root@pgdatabase:5432/ny_taxi"
+    --tablename="zones"
+
+Improvements I would make for a real project:
+1. Ingesting one data file per python script is not ideal. Instead, I would make it so that I could pass multiple 
+  data sources to the python file and have it ingest each. 
+2.  Define arguments for different parts of the database engine URL
+3.  Currently, I am building a docker image for the python environment and manually running it for each data table. 
+  Instead, along with (1), I would include this python container as a service in the docker-compose file with pgadmin
+  and postgres (so that they are in the same network), include all of the data source urls in an environment variable, 
+  and pass this arg "array" to the python script to ingest all of the data tables in one run. 
+  
+  Or, potentially specify an input document (potentially csv) which specified  "desired_table_name, data_source url", 
+  with one row for each data source. Then have the python script accept that input file and loop over to ingest each 
+  data source. This is more scalable. 
+-------------------------
+
+
+    104,802; 197,670; 110,612; 27,831; 35,281
+            104,802 + 197,670 + 110,612 +  27,831 + 35,281 = 476196
+    104,802; 198,924; 109,603; 27,678; 35,189
+            104,802 + 198,924 + 109,603 + 27,678 + 35,189 = 476196
+    104,793; 201,407; 110,612; 27,831; 35,281
+            ?
+    104,793; 202,661; 109,603; 27,678; 35,189
+            ?
+    104,838; 199,013; 109,645; 27,688; 35,202
+            104,838+ 199,013+ 109,645 + 27,688 + 35,202 = 476386
+
+
+----------------------------------------------------------------------------------------------------------------------------
+OOPS! wrong hw qs from last year: 
 
 1. 
 --rm: docker run --help                              
@@ -14,23 +91,3 @@ Package    Version
 pip        23.0.1
 setuptools 58.1.0
 wheel      0.45.1
-
-
-3.
-
-(a) Set up localhost volume to map to docker data
-(b) Set up pgadmin 
-(c) Set up postgres 
-(d) Link pgadmin and postgres (two options, manually via docker network, or via docker-compose)
-(e) Postgres ingestion of Green taxi trips from Sept 2019 via python script 
-    > Tested out in notebook for ease of exploration
-    > Converted nb to python script: $jupyter nbconvert --to=script ingest_data_hw.ipynb
-(f) SQL queries for data
-
-Local volume: /my-de-zoomcamp/1_homework/green_taxi_data
-Docker-compose file: /my-de-zoomcamp/1_homework/docker-compose.yaml
-Python script: /my-de-zoomcamp/1_homework/ingest_data.ipynb
-SQL commands:  
-
-
-https://github.com/DataTalksClub/nyc-tlc-data/releases/download/green/green_tripdata_2019-10.csv.gz

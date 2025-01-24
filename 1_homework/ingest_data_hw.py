@@ -1,42 +1,52 @@
 import pandas as pd
 from sqlalchemy import create_engine
 import os
+import argparse
 
-taxi_url = "https://github.com/DataTalksClub/nyc-tlc-data/releases/download/green/green_tripdata_2019-10.csv.gz"
-zones_url = "https://github.com/DataTalksClub/nyc-tlc-data/releases/download/misc/taxi_zone_lookup.csv"
-taxi_gz_fpath = os.path.join(os.getcwd(), "green_taxi.csv.gz")
-taxi_csv_fpath = os.path.join(os.getcwd(), "green_taxi.csv")
-zones_csv = os.path.join(os.getcwd(), "zones.csv")
+parser = argparse.ArgumentParser()
+parser.add_argument("--data_url", type=str, required=True)
+parser.add_argument("--engine", type=str, required=True)
+parser.add_argument("--tablename", type=str, required=True)
+
+args = parser.parse_args() 
+data_url = args.data_url
+engine_addr = args.engine
+table_name = args.tablename
+
+# figure out destination filepaths for the data download
+is_data_gz = False
+wget_data_filename = "data.csv"
+if data_url.endswith(".gz"):
+    is_data_gz = True
+    wget_data_filename = "data.csv.gz"
+    
+wget_url_fpath = os.path.join(os.getcwd(), wget_data_filename)  # destination filepath after calling wget on url
+csv_fpath = os.path.join(os.getcwd(), "data.csv")  # filepath for final csv (same as wget_url_fpath if not a zipped file)
 
 # download the data to local machine 
-os.system(f"wget -O {taxi_gz_fpath} {taxi_url}")
-os.system(f"gunzip {taxi_gz_fpath}")
-os.system(f"wget -O {zones_csv} {zones_url}")
-
+os.system(f"wget -O {wget_url_fpath} {data_url}")
+if is_data_gz:
+    os.system(f"gunzip {wget_url_fpath}")
 
 # create an engine to connect to postgres 
-engine = create_engine("postgresql://root:root@localhost:5432/ny_taxi")
+engine = create_engine(engine_addr)
 engine.connect()
 
-# ingest data 
-print("importing zone data")
-output = zones_df.to_sql(name="zone_data", con=engine, if_exists='replace')
-print(f"{output}(ish) rows from zone data imported")
+# ingest data - split data into chunks of 100,000 and create an iterator 
+data_iter = pd.read_csv(csv_fpath, iterator=True, chunksize=100000)  # if <100k rows, will just get 1 chunk 
 
-print(pd.io.sql.get_schema(frame=zones_df, name="ny_taxi", con=engine))
-print(pd.io.sql.get_schema(frame=taxi_df, name="ny_taxi", con=engine))
+# iterate over data chunks and upload each to the database via engine
+for i, df_chunk in enumerate(data_iter):
+    print(f"Importing chunk {i} of data...")
+    # df_chunk["lpep_pickup_datetime"] = pd.to_datetime(df_chunk.lpep_pickup_datetime)
+    # df_chunk["lpep_dropoff_datetime"] = pd.to_datetime(df_chunk.lpep_dropoff_datetime)
+    output = df_chunk.to_sql(name=table_name, con=engine, if_exists='append')
+    print(f"...{output}(ish) rows from data imported")  # output from df.to_sql is not guaranteed to be actual # rows written
 
-# split data into chunks of 100,000 and create an iterator 
-taxi_iter = pd.read_csv(taxi_csv_fpath, iterator=True, chunksize=100000)
-
-# iterate over data chunks and upload each to the postgres database via engine
-for i, df_chunk in enumerate(taxi_iter):
-    print(f"Importing chunk {i} in green taxi data...")
-    df_chunk["lpep_pickup_datetime"] = pd.to_datetime(df_chunk.lpep_pickup_datetime)
-    df_chunk["lpep_dropoff_datetime"] = pd.to_datetime(df_chunk.lpep_dropoff_datetime)
-    output = df_chunk.to_sql(name='green_taxi_data', con=engine, if_exists='append')
-    print(f"...{output}(ish) rows from taxi data imported")  # output from df.to_sql is not guaranteed to be actual # rows written
-
+# remove gz/csv files created 
+os.remove(wget_url_fpath)
+if is_data_gz:
+    os.remove(csv_fpath)
 
 print("done ingesting...yum")
 
