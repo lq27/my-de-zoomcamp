@@ -6,9 +6,12 @@ services:
       - PGADMIN_DEFAULT_PASSWORD=root
     ports:
       - 8080:80
+    depends_on:  # ensure containers start up in order 
+      - postgres
 
   pgdatabase:
     image: postgres:13
+    user: "999:999"  # Postgres container's default user ID
     environment: 
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
