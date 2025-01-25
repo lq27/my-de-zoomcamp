@@ -11,8 +11,8 @@ pip 24.3.1 from /usr/local/lib/python3.12/site-packages/pip (python 3.12)
 2.
 
 Hostname: "postgres" since that is the container name. If there were no container_name specified, then it would be "db," the service name. 
-Port: 5432. The port mapping is <port outside/host>:<port inside/container> . Pgadmin will want to access postgres's container port, since 
-    they can see each other within the network. 
+Port: 5432. The port mapping is <localhost port>:<container port> . Pgadmin will want to access postgres's container port, since 
+postgres and pgadmin are both containers, seeing each other within the docker network. 
 
 ~~ PREPARE POSTGRES ~~
 
