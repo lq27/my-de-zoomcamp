@@ -75,6 +75,9 @@ Answer: 2019-10-11 with 95.78 mile trip distance.
 5. See "sql_5" file. 
 Answer: East Harlem North, East Harlem South, Morningside Heights
 
+6. See "sql_6" file. 
+Answer: JFK Airport
+
 ----------------------------------------------------------------------------------------------------------------------------
 OOPS! wrong hw qs from last year: 
 

@@ -1,0 +1,32 @@
+WITH october_rides AS (
+	SELECT *
+	FROM public.green_taxi
+	WHERE lpep_pickup_datetime >= '2019-10-01'
+		AND lpep_dropoff_datetime >= '2019-10-01'
+		AND lpep_pickup_datetime < '2019-11-01' 
+		AND lpep_dropoff_datetime < '2019-11-01'
+),
+
+october_zones AS (
+	SELECT october_rides."index", 
+		public.zones."Zone" AS "PUZone",
+		october_rides."PULocationID", 
+		october_rides."tip_amount", 
+		october_rides."DOLocationID" 
+	FROM october_rides
+	JOIN public.zones
+		ON october_rides."PULocationID" = public.zones."LocationID"
+)
+
+SELECT october_zones."index", 
+		october_zones."PUZone",
+		october_zones."PULocationID", 
+		october_zones."tip_amount", 
+		public.zones."Zone" AS "DOZone",
+		october_zones."DOLocationID" 
+FROM october_zones
+JOIN public.zones
+	ON public.zones."LocationID" = october_zones."DOLocationID"
+WHERE "PUZone" = 'East Harlem North'
+ORDER BY "tip_amount" DESC 
+LIMIT 1
