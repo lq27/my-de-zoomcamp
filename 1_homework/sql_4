@@ -1,4 +1,4 @@
 SELECT *
 FROM public.green_taxi
 ORDER BY trip_distance DESC
-LIMIT 100
+LIMIT 1

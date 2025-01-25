@@ -70,7 +70,7 @@ Note: I needed to ensure that the dropoff time was in the October 2019 time wind
 Since some trips started on Oct 31 but finished on Nov 1 (these would not be included). 
 
 4. See "sql_4" file. 
-Answer: 2019-10-11 with 95.78 mile trip distance. 
+Answer: 2019-10-31 with 515.89 mile trip distance. 
 
 5. See "sql_5" file. 
 Answer: East Harlem North, East Harlem South, Morningside Heights
