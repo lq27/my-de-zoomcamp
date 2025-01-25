@@ -63,14 +63,20 @@ Improvements I would make for a real project:
   data source. This is more scalable. 
 -------------------------
 
-3. 
-See "sql_3" file for SQL queries used. 
+3. See "sql_3" file for SQL queries used. 
 Answer: # 2 : 104,802; 198,924; 109,603; 27,678; 35,189
 
 Note: I needed to ensure that the dropoff time was in the October 2019 time window, not just pickup time. 
 Since some trips started on Oct 31 but finished on Nov 1 (these would not be included). 
 
-4. 
+4. See "sql_4" file. 
+Answer: 2019-10-11 with 95.78 mile trip distance. 
+
+Note: I encountered a file permissions error when using ORDER BY because it somehow led to parallelization 
+which required a file that could not be accessed. I used chatGPT to help, and it suggested turning off 
+parallelization, which I did. 
+
+5. 
 
 ----------------------------------------------------------------------------------------------------------------------------
 OOPS! wrong hw qs from last year: 
