@@ -72,7 +72,8 @@ Since some trips started on Oct 31 but finished on Nov 1 (these would not be inc
 4. See "sql_4" file. 
 Answer: 2019-10-11 with 95.78 mile trip distance. 
 
-5. 
+5. See "sql_5" file. 
+Answer: East Harlem North, East Harlem South, Morningside Heights
 
 ----------------------------------------------------------------------------------------------------------------------------
 OOPS! wrong hw qs from last year: 

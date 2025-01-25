@@ -1,0 +1,29 @@
+
+WITH oct_18_rides AS (
+	SELECT *
+	FROM public.green_taxi
+	WHERE lpep_pickup_datetime >= '2019-10-18'
+		AND lpep_pickup_datetime < '2019-10-19'
+),
+
+oct_18_zones AS (
+	SELECT oct_18_rides."index", 
+		oct_18_rides."lpep_pickup_datetime",
+		oct_18_rides."PULocationID", 
+		zones."Zone", 
+		oct_18_rides."total_amount"
+	FROM oct_18_rides
+	JOIN public.zones
+		ON oct_18_rides."PULocationID" = zones."LocationID"
+), 
+
+amt_by_zone AS (
+	SELECT "Zone", 
+		SUM("total_amount") AS "sum_total_amt"
+	FROM oct_18_zones
+	GROUP BY "Zone"
+)
+
+SELECT "Zone", "sum_total_amt"
+FROM amt_by_zone
+WHERE "sum_total_amt" >= 13000
