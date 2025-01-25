@@ -72,10 +72,6 @@ Since some trips started on Oct 31 but finished on Nov 1 (these would not be inc
 4. See "sql_4" file. 
 Answer: 2019-10-11 with 95.78 mile trip distance. 
 
-Note: I encountered a file permissions error when using ORDER BY because it somehow led to parallelization 
-which required a file that could not be accessed. I used chatGPT to help, and it suggested turning off 
-parallelization, which I did. 
-
 5. 
 
 ----------------------------------------------------------------------------------------------------------------------------
