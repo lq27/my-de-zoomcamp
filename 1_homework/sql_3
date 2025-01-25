@@ -1,8 +1,13 @@
+-- HW Question 3
+-- Categorizing and counting rides by mileage in October 2019
+
 WITH october_rides AS (
 	SELECT *
 	FROM public.green_taxi
-	WHERE lpep_pickup_datetime >= '2019-10-01' 
+	WHERE lpep_pickup_datetime >= '2019-10-01'
+		AND lpep_dropoff_datetime >= '2019-10-01'
 		AND lpep_pickup_datetime < '2019-11-01' 
+		AND lpep_dropoff_datetime < '2019-11-01' 
 ), 
 
 categorized_dist AS (
@@ -44,5 +49,6 @@ SELECT
 	SUM("10_plus_miles") AS "10plus_mi_sum"
 FROM categorized_dist
 )
-SELECT 	"1_mi_sum" + "1_3_mi_sum" + "3_7_mi_sum" + "7_10_mi_sum" + "10plus_mi_sum"
-FROM sums
+
+SELECT *
+from sums

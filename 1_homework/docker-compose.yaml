@@ -16,7 +16,7 @@ services:
     volumes:
       - "/home/abbythecat27/my-de-zoomcamp/1_homework/green_taxi_data:/var/lib/postgresql/data"
     ports:
-      - 5432:5432
+      - 5433:5432  # localhost port : container port; on the VM, postgres is already running on local 5432 so i chose 5433
 
   # python_ingest:
   #   build:

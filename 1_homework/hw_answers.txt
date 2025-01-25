@@ -14,26 +14,24 @@ Hostname: "postgres" since that is the container name. If there were no containe
 Port: 5432. The port mapping is <port outside/host>:<port inside/container> . Pgadmin will want to access postgres's container port, since 
     they can see each other within the network. 
 
-3.
+~~ PREPARE POSTGRES ~~
 
-(a) Set up localhost volume to map to docker data
-(b) Set up pgadmin 
-(c) Set up postgres 
-(d) Link pgadmin and postgres (two options, manually via docker network, or via docker-compose)
-(e) Postgres ingestion of Green taxi trips from Sept 2019 via python script 
+My approach: 
+(a) Set up localhost volume/folder to map to docker data
+(b) Set up pgadmin and set up postgres (use a docker-compose file to keep them in the same network)
+(c) Postgres ingestion of Green taxi trips from Sept 2019 via python script 
     > Tested out in notebook for ease of exploration
     > Converted nb to python script: $jupyter nbconvert --to=script ingest_data_hw.ipynb
-(f) Dockerize (build image for script) and run ingestion script container in the same network as pgadmin/postgres to ingest
-(g) SQL queries for data
+(d) Build a docker image forpython script & run ingestion script container in the same network as pgadmin/postgres to ingest
 
 Local volume: /my-de-zoomcamp/1_homework/green_taxi_data
 Docker-compose file: /my-de-zoomcamp/1_homework/docker-compose.yaml
 Python script: /my-de-zoomcamp/1_homework/ingest_data.ipynb
-Dockerfile (for python script custom image): /my-de-zoomcamp/1_homework/Dockerfile
-SQL commands:  
+Dockerfile (for python script custom image, part D): /my-de-zoomcamp/1_homework/Dockerfile
 
 Bash commands in order: 
 
+$ cd my-de-zoomcamp/1_homework/
 $ docker build -t ingest_data:v0 .
 $ docker-compose -p pgd up
 $ docker run \
@@ -47,6 +45,10 @@ $ docker run \
     --engine="postgresql://root:root@pgdatabase:5432/ny_taxi"
     --tablename="zones"
 
+Note: I used localhost:5433 mapped to docker port 5432 because my local postgres generally has already taken up my 
+localhost:5432, and I find it annoying to stop the postgres process each time I restart my VM. I also forwarded 
+my remote(VM) localhost:5433 to my laptop's localhost:5433. 
+
 Improvements I would make for a real project:
 1. Ingesting one data file per python script is not ideal. Instead, I would make it so that I could pass multiple 
   data sources to the python file and have it ingest each. 
@@ -56,23 +58,19 @@ Improvements I would make for a real project:
   and postgres (so that they are in the same network), include all of the data source urls in an environment variable, 
   and pass this arg "array" to the python script to ingest all of the data tables in one run. 
   
-  Or, potentially specify an input document (potentially csv) which specified  "desired_table_name, data_source url", 
+  Or, have an input document (potentially csv) which specified  "desired_table_name, data_source url", 
   with one row for each data source. Then have the python script accept that input file and loop over to ingest each 
   data source. This is more scalable. 
 -------------------------
 
+3. 
+See "sql_3" file for SQL queries used. 
+Answer: # 2 : 104,802; 198,924; 109,603; 27,678; 35,189
 
-    104,802; 197,670; 110,612; 27,831; 35,281
-            104,802 + 197,670 + 110,612 +  27,831 + 35,281 = 476196
-    104,802; 198,924; 109,603; 27,678; 35,189
-            104,802 + 198,924 + 109,603 + 27,678 + 35,189 = 476196
-    104,793; 201,407; 110,612; 27,831; 35,281
-            ?
-    104,793; 202,661; 109,603; 27,678; 35,189
-            ?
-    104,838; 199,013; 109,645; 27,688; 35,202
-            104,838+ 199,013+ 109,645 + 27,688 + 35,202 = 476386
+Note: I needed to ensure that the dropoff time was in the October 2019 time window, not just pickup time. 
+Since some trips started on Oct 31 but finished on Nov 1 (these would not be included). 
 
+4. 
 
 ----------------------------------------------------------------------------------------------------------------------------
 OOPS! wrong hw qs from last year: 
