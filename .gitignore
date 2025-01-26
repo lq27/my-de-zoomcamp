@@ -1,3 +1,6 @@
+# private json files
+*.json
+gcp/
 
 # database 
 1_docker_gcp_terraform/docker/ny_taxi_postgres_data/
