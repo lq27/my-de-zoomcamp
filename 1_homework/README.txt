@@ -80,6 +80,15 @@ Answer: East Harlem North, East Harlem South, Morningside Heights
 6. See "sql_6" file. 
 Answer: JFK Airport
 
+7. 
+Terraform init downloads the provider and sets up backend. 
+Terraform apply -auto-approve would actualize the changes proposed in a tf plan, and autoapprove would bypass the need to 
+    confirm the changes. 
+Terraform destroy removes tf-managed resources. 
+
+The steps in this question skip over terraform plan, which would be between init and apply, wher you create a plan of 
+actions that you want to take, before actually applying them. It is not necessary, but probably a good idea. 
+
 ----------------------------------------------------------------------------------------------------------------------------
 OOPS! wrong hw qs from last year: 
 
