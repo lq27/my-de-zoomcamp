@@ -1,0 +1,15 @@
+id: purge
+namespace: zoomcamp
+
+tasks:
+  - id: purge_executions
+    type: io.kestra.plugin.core.execution.PurgeExecutions
+    endDate: "{{ now() }}"
+    purgeLog: false
+    states:
+      - SUCCESS
+
+  - id: purge_logs
+    type: io.kestra.plugin.core.log.PurgeLogs
+    endDate: "{{ now() }}"
+
