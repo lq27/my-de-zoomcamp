@@ -8,6 +8,10 @@ gcp/
 2_kestra/data_pgadmin
 2_kestra/kestra-data/*
 2_kestra/postgres-data
+5_spark/data/
+5_spark/fhvhv/
+5_spark/zones/
+5_spark_hw/data
 
 *.csv
 *.gz
