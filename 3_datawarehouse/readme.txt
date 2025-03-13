@@ -61,3 +61,7 @@ See Q6_SQL
 8. False 
 
 Clustering is only helpful for large data sets, otherwise the overhead actually slows things down. 
+
+9. 0B of data
+
+The number of records (essentially what count(*) does) is in the metadata for the table, so you don't actually have to process anything. 
