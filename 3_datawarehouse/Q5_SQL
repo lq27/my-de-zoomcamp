@@ -1,0 +1,5 @@
+CREATE OR REPLACE TABLE `rclone-446420.nytaxi.yellow_tripdata_part_cluster`
+PARTITION BY DATE(tpep_dropoff_datetime)
+CLUSTER BY VendorID
+AS
+SELECT * FROM `rclone-446420.nytaxi.external_yellow_tripdata`

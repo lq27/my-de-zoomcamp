@@ -1,0 +1,7 @@
+/* for only PULocationID */
+SELECT PULocationID 
+FROM `rclone-446420.nytaxi.yellow_tripdata_non_partitioned`
+
+/* for PULocationID and DOLocationID */
+SELECT PULocationID, DOLocationID 
+FROM `rclone-446420.nytaxi.yellow_tripdata_non_partitioned`

@@ -1,0 +1,2 @@
+SELECT COUNT(*) 
+FROM `nytaxi.yellow_tripdata_non_partitioned`

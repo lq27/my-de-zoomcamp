@@ -1,0 +1,7 @@
+/* external table */
+SELECT COUNT(DISTINCT PULocationID)
+FROM `rclone-446420.nytaxi.external_yellow_tripdata`
+
+/* materialized table */
+SELECT COUNT(DISTINCT PULocationID)
+FROM `rclone-446420.nytaxi.yellow_tripdata_non_partitioned`
