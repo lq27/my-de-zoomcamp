@@ -1,0 +1,9 @@
+/* Partitioned and clustered table */ 
+SELECT VendorID 
+FROM `rclone-446420.nytaxi.yellow_tripdata_part_cluster`
+WHERE tpep_dropoff_datetime  >= "2024-03-01" AND tpep_dropoff_datetime < "2024-03-16"
+
+/* Non partitioned table */
+SELECT VendorID 
+FROM `rclone-446420.nytaxi.yellow_tripdata_non_partitioned`
+WHERE tpep_dropoff_datetime  >= "2024-03-01" AND tpep_dropoff_datetime < "2024-03-16"

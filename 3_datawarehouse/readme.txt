@@ -46,4 +46,18 @@ it should be well under 4000 partitions and you'll be filtering on it.
 
 See Q5_SQL 
 
-6.
+6. 310.24 MB for non-partitioned table and 26.84 MB for the partitioned table
+
+> Partitioned and clustered data: 
+This query will process 26.84 MB when run.
+
+> Non partitioned data: 
+This query will process 310.24 MB when run.
+
+See Q6_SQL 
+
+7. GCP Bucket
+
+8. False 
+
+Clustering is only helpful for large data sets, otherwise the overhead actually slows things down. 
